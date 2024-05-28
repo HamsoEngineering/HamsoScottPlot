@@ -77,7 +77,19 @@ public class Label
         FontName = Fonts.Detect(Text);
     }
 
+    private SKTypeface? CachedTypeface = null;
 
+    private SKTypeface Typeface
+    {
+        get
+        {
+            if (CachedTypeface is null)
+            {
+                CachedTypeface = Fonts.GetTypeface(FontName, Bold, Italic);
+            }
+            return CachedTypeface;
+        }
+    }
     private void ApplyPointPaint(SKPaint paint)
     {
         paint.IsStroke = !PointFilled;
@@ -116,7 +128,7 @@ public class Label
     {
         paint.TextAlign = SKTextAlign.Left;
         paint.IsStroke = false;
-        paint.Typeface = Fonts.GetTypeface(FontName, Bold, Italic);
+        paint.Typeface = Typeface;
         paint.TextSize = FontSize;
         paint.Color = ForeColor.ToSKColor();
         paint.IsAntialias = AntiAliasText;
